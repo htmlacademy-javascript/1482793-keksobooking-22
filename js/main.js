@@ -2,20 +2,20 @@
 
 const TITLE = 'Заголовок объявления';
 
-const TYPE = [
+const TYPES = [
   'palace',
   'flat',
   'house',
   'bungalow',
 ];
 
-const CHECK_IN_TIME = [
+const CHECK_IN_TIMES = [
   '12:00',
   '13:00',
   '14:00',
 ];
 
-const CHECK_OUT_TIME = [
+const CHECK_OUT_TIMES = [
   '12:00',
   '13:00',
   '14:00',
@@ -45,7 +45,6 @@ const getRandomInteger = (min, max) => {
   if (min >= 0 && max >= min) {
     return Math.floor(min + Math.random() * (max - min));
   }
-  return;
 };
 
 // Функция, возвращающая случайное число с плавающей точкой из переданного диапазона включительно
@@ -53,12 +52,11 @@ const getRandomNumber = (min, max, digitsAfterComma) => {
   if (min >= 0 && max >= min) {
     return +(min + Math.random() * (max - min)).toFixed(digitsAfterComma);
   }
-  return;
 };
 
 // Функция, возвращающая число с ведущим нулем
 const getFirstZero = (number) => {
-  return number < 10 ? '0' + number : number;
+  return number < 10 ? `0${number}` : number;
 }
 
 // Функция, генерирующая случайный элемент массива
@@ -70,7 +68,7 @@ const getRandomArrayElement = (elements) => {
 const getRandomArray = (array) => {
   let newArray = array.slice();
   for (let i = newArray.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(Math.random() * (i + 1));
     [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
   }
   return newArray.slice(0, getRandomInteger(1, newArray.length));
@@ -78,28 +76,28 @@ const getRandomArray = (array) => {
 
 // Функция, генерирующая объект описания похожего объявления неподалеку
 const createAd = () => {
-  let coordinateX = getRandomNumber(35.65000, 35.70000, 5);
-  let coordinateY = getRandomNumber(139.70000, 139.80000, 5);
+  const COORDINATE_X = getRandomNumber(35.65000, 35.70000, 5);
+  const COORDINATE_Y = getRandomNumber(139.70000, 139.80000, 5);
   return {
     author: {
-      avatar: 'img/avatars/user' + getFirstZero(getRandomInteger(1, 8)) + '.png',
+      avatar: `img/avatars/user${getFirstZero(getRandomInteger(1, 8))}.png`,
     },
     offer: {
       title: TITLE,
-      address: coordinateX + ', ' + coordinateY,
+      address: `${COORDINATE_X}, ${COORDINATE_Y}`,
       price: getRandomInteger(0, 1000000),
-      type: getRandomArrayElement(TYPE),
+      type: getRandomArrayElement(TYPES),
       rooms:  getRandomInteger(0, 100),
       guests:  getRandomInteger(0, 100),
-      checkin: getRandomArrayElement(CHECK_IN_TIME),
-      checkout: getRandomArrayElement(CHECK_OUT_TIME),
+      checkin: getRandomArrayElement(CHECK_IN_TIMES),
+      checkout: getRandomArrayElement(CHECK_OUT_TIMES),
       features: getRandomArray(FEATURES),
       description: DESCRIPTION,
       photos: getRandomArray(PHOTOS),
     },
     location: {
-      x: coordinateX,
-      y: coordinateY,
+      x: COORDINATE_X,
+      y: COORDINATE_Y,
     },
   };
 };
