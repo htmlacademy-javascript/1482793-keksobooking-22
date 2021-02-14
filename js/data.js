@@ -69,6 +69,6 @@ const createAd = () => {
 };
 
 // Функция, генерирующая массив объектов описаний похожих объявлений неподалеку
-const similarAds = new Array(SIMILAR_ADS_COUNT).fill(null).map(() => createAd());
+const createSimilarAds = () => new Array(SIMILAR_ADS_COUNT).fill(null).map(() => createAd());
 
-similarAds;
+export {createSimilarAds};
