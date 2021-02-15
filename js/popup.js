@@ -48,7 +48,7 @@ const createSimilarCard = ({author, offer}) => {
   SIMILAR_CARD_ELEMENT.querySelector('.popup__text--address').textContent = offer.address;
   SIMILAR_CARD_ELEMENT.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
   SIMILAR_CARD_ELEMENT.querySelector('.popup__type').textContent = TYPE_DICTIONARY[offer.type];
-  SIMILAR_CARD_ELEMENT.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${declineWord(offer.rooms, ['комната', 'комнаты', 'комнат'])} для ${offer.guests} ${declineWord(offer.rooms, ['гостя', 'гостей', 'гостей'])}`;
+  SIMILAR_CARD_ELEMENT.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${declineWord(offer.rooms, ['комната', 'комнаты', 'комнат'])} для ${offer.guests} ${declineWord(offer.guests, ['гостя', 'гостей', 'гостей'])}`;
   SIMILAR_CARD_ELEMENT.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
 
   const CARD_FEATURES = SIMILAR_CARD_ELEMENT.querySelector('.popup__features');
