@@ -37,6 +37,12 @@ const MAIN_PIN = L.marker(
   },
 );
 
+const SMALL_PIN_ICON = L.icon({
+  iconUrl: './img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   {
@@ -51,19 +57,13 @@ MAIN_PIN.on('moveend', (evt) => {
 });
 
 SIMILAR_ADS.forEach((ad) => {
-  const SMALL_PIN_ICON = L.icon({
-    iconUrl: './img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
-
   const SMALL_PIN = L.marker(
     {
       lat: ad.location.x,
       lng: ad.location.y,
     },
     {
-      SMALL_PIN_ICON,
+      icon: SMALL_PIN_ICON,
     },
   );
 
