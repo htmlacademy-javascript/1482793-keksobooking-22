@@ -1,6 +1,6 @@
 import {createSimilarAds} from './data.js';
 
-const MAP_CANVAS = document.querySelector('#map-canvas');
+// const MAP_CANVAS = document.querySelector('#map-canvas');
 
 const SIMILAR_CARD_TEMPLATE = document.querySelector('#card').content.querySelector('.popup');
 
@@ -65,9 +65,10 @@ const createSimilarCard = ({author, offer}) => {
   return SIMILAR_CARD_ELEMENT;
 };
 
-const SIMILAR_CARDS = SIMILAR_ADS.map(createSimilarCard);
-const CARDS_FRAGMENT = document.createDocumentFragment();
+// const SIMILAR_CARDS = SIMILAR_ADS.map(createSimilarCard);
+// const CARDS_FRAGMENT = document.createDocumentFragment();
 // SIMILAR_CARDS.forEach(item => CARDS_FRAGMENT.appendChild(item));
-CARDS_FRAGMENT.appendChild(SIMILAR_CARDS[0]);
-MAP_CANVAS.appendChild(CARDS_FRAGMENT);
+// CARDS_FRAGMENT.appendChild(SIMILAR_CARDS[0]);
+// MAP_CANVAS.appendChild(CARDS_FRAGMENT);
 
+export {SIMILAR_ADS, createSimilarCard};
