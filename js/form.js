@@ -1,6 +1,7 @@
 import {showErrorMessage, showSuccessMessage} from './messages.js';
 import {sendData} from './api.js';
 import {INITIAL_COORDINATES, MAIN_PIN} from './map.js';
+import {FILTER} from './filter.js';
 
 const AD_FORM = document.querySelector('.ad-form');
 
@@ -106,21 +107,17 @@ CHECK_OUT_TIME.addEventListener('change', () => {
   CHECK_IN_TIME.value = CHECK_OUT_TIME.value;
 });
 
-const setFormSubmit = (onSuccess) => {
-  AD_FORM.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    sendData(
-      () => onSuccess(),
-      () => showErrorMessage(),
-      new FormData(evt.target),
-    );
-  });
-};
-
-setFormSubmit(showSuccessMessage);
+AD_FORM.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  sendData(
+    showSuccessMessage,
+    showErrorMessage,
+    new FormData(evt.target),
+  );
+});
 
 AD_FORM.addEventListener('reset', () => {
+  FILTER.reset();
   MAIN_PIN.setLatLng(INITIAL_COORDINATES);
   setTimeout(() => {
     getRoomCapacity();
@@ -128,4 +125,4 @@ AD_FORM.addEventListener('reset', () => {
   }, 0)
 });
 
-export {enableForm, ADDRESS, setFormSubmit, AD_FORM};
+export {enableForm, ADDRESS, AD_FORM};

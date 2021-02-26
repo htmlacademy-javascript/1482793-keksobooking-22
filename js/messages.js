@@ -10,30 +10,26 @@ const ALERT_SHOW_TIME = 5000;
 
 const MAIN = document.querySelector('main');
 
-const onModalEscKeydown = (evt, modal) => {
-  if (isEscEvent(evt)) {
-    evt.preventDefault();
-    closeModal(modal);
-  }
-};
-
-const closeModal = (modal) => {
-  modal.remove();
-  document.removeEventListener('keydown', onModalEscKeydown);
-};
-
 // Функция, создающая модальное окно
 const createModal = (type) => {
-  MAIN.append(type);
 
-  document.addEventListener('keydown', (evt) => {
+  const onModalEscKeydown = (evt) => {
     if (isEscEvent(evt)) {
       evt.preventDefault();
       closeModal(type);
     }
-  });
+  };
 
-  document.addEventListener('click', () => {
+  const closeModal = () => {
+    type.remove();
+    document.removeEventListener('keydown', onModalEscKeydown);
+  };
+
+  MAIN.append(type);
+
+  document.addEventListener('keydown', onModalEscKeydown);
+
+  type.addEventListener('click', () => {
     closeModal(type);
   });
 };
@@ -54,11 +50,11 @@ const showErrorMessage = () => {
 // Функция, показывающая предупреждение об ошибке запроса
 const showAlert = (message) => {
   const ALERT_CONTAINER = document.createElement('div');
-  ALERT_CONTAINER.style.zIndex = 100;
+  ALERT_CONTAINER.style.zIndex = '100';
   ALERT_CONTAINER.style.position = 'absolute';
-  ALERT_CONTAINER.style.left = 0;
-  ALERT_CONTAINER.style.top = 0;
-  ALERT_CONTAINER.style.right = 0;
+  ALERT_CONTAINER.style.left = '0';
+  ALERT_CONTAINER.style.top = '0';
+  ALERT_CONTAINER.style.right = '0';
   ALERT_CONTAINER.style.padding = '10px 3px';
   ALERT_CONTAINER.style.fontSize = '20px';
   ALERT_CONTAINER.style.textAlign = 'center';

@@ -20,4 +20,4 @@ const enableFilter = () => {
   FEATURES_FIELDSET.disabled = false;
 };
 
-export {enableFilter, disableFilter};
+export {enableFilter, disableFilter, FILTER};
