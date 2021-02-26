@@ -2,7 +2,9 @@
 
 import {enableFilter} from './filter.js';
 import {enableForm, ADDRESS} from './form.js';
-import {SIMILAR_ADS, createSimilarCard} from './popup.js';
+import {createSimilarCard} from './popup.js';
+import {getData} from './api.js';
+import {showAlert} from './messages.js';
 
 const INITIAL_COORDINATES = {
   lat: '35.68951',
@@ -56,18 +58,24 @@ MAIN_PIN.on('moveend', (evt) => {
   ADDRESS.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-SIMILAR_ADS.forEach((ad) => {
-  const SMALL_PIN = L.marker(
-    {
-      lat: ad.location.x,
-      lng: ad.location.y,
-    },
-    {
-      icon: SMALL_PIN_ICON,
-    },
-  );
+const createSmallPins = similarAds => {
+  similarAds.forEach((ad) => {
+    const SMALL_PIN = L.marker(
+      {
+        lat: ad.location.lat,
+        lng: ad.location.lng,
+      },
+      {
+        icon: SMALL_PIN_ICON,
+      },
+    );
 
-  SMALL_PIN
-    .addTo(MAP)
-    .bindPopup(createSimilarCard(ad));
-});
+    SMALL_PIN
+      .addTo(MAP)
+      .bindPopup(createSimilarCard(ad));
+  });
+};
+
+getData(createSmallPins, showAlert);
+
+export {INITIAL_COORDINATES, MAIN_PIN};

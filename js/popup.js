@@ -1,7 +1,5 @@
 import {createSimilarAds} from './data.js';
 
-// const MAP_CANVAS = document.querySelector('#map-canvas');
-
 const SIMILAR_CARD_TEMPLATE = document.querySelector('#card').content.querySelector('.popup');
 
 const SIMILAR_ADS = createSimilarAds();

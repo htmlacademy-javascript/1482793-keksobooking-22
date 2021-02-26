@@ -32,4 +32,8 @@ const getRandomArray = (array) => {
   return newArray.slice(0, getRandomInteger(1, newArray.length));
 };
 
-export {getRandomInteger, getRandomNumber, getFirstZero, getRandomArrayElement, getRandomArray};
+const isEscEvent = (evt) => {
+  return evt.key === 'Escape' || evt.key === 'Esc';
+};
+
+export {getRandomInteger, getRandomNumber, getFirstZero, getRandomArrayElement, getRandomArray, isEscEvent};
