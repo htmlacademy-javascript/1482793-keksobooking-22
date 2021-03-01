@@ -1,6 +1,6 @@
 /* global L:readonly */
 
-import {enableFilter} from './filter.js';
+import {enableFilter, setFilterChange, filterAds, setFilterReset} from './filter.js';
 import {enableForm, ADDRESS} from './form.js';
 import {createSimilarCard} from './popup.js';
 import {getData} from './api.js';
@@ -10,6 +10,8 @@ const INITIAL_COORDINATES = {
   lat: '35.68951',
   lng: '139.69201',
 };
+
+const SIMILAR_ADS_COUNT = 10;
 
 const MAP = L.map('map-canvas')
   .on('load', () => {
@@ -58,24 +60,38 @@ MAIN_PIN.on('moveend', (evt) => {
   ADDRESS.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-const createSmallPins = similarAds => {
-  similarAds.forEach((ad) => {
-    const SMALL_PIN = L.marker(
-      {
-        lat: ad.location.lat,
-        lng: ad.location.lng,
-      },
-      {
-        icon: SMALL_PIN_ICON,
-      },
-    );
+let smallPins = [];
 
-    SMALL_PIN
-      .addTo(MAP)
-      .bindPopup(createSimilarCard(ad));
-  });
+const createSmallPins = similarAds => {
+  smallPins.forEach((pin) => pin.remove());
+
+  similarAds
+    .slice()
+    .filter(filterAds)
+    .slice(0, SIMILAR_ADS_COUNT)
+    .forEach((ad) => {
+      const SMALL_PIN = L.marker(
+        {
+          lat: ad.location.lat,
+          lng: ad.location.lng,
+        },
+        {
+          icon: SMALL_PIN_ICON,
+        },
+      );
+
+      SMALL_PIN
+        .addTo(MAP)
+        .bindPopup(createSimilarCard(ad));
+
+      smallPins.push(SMALL_PIN);
+    });
 };
 
-getData(createSmallPins, showAlert);
+getData((ads) => {
+  createSmallPins(ads);
+  setFilterReset(() => createSmallPins(ads));
+  setFilterChange(() => createSmallPins(ads));
+}, showAlert);
 
-export {INITIAL_COORDINATES, MAIN_PIN};
+export {INITIAL_COORDINATES, MAIN_PIN, smallPins};
