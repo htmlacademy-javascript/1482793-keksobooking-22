@@ -1,4 +1,5 @@
 /* global L:readonly */
+/* global _:readonly */
 
 import {enableFilter, setFilterChange, filterAds, setFilterReset} from './filter.js';
 import {enableForm, ADDRESS} from './form.js';
@@ -12,6 +13,8 @@ const INITIAL_COORDINATES = {
 };
 
 const SIMILAR_ADS_COUNT = 10;
+
+const CREATE_PINS_DELAY = 500;
 
 const MAP = L.map('map-canvas')
   .on('load', () => {
@@ -66,7 +69,6 @@ const createSmallPins = similarAds => {
   smallPins.forEach((pin) => pin.remove());
 
   similarAds
-    .slice()
     .filter(filterAds)
     .slice(0, SIMILAR_ADS_COUNT)
     .forEach((ad) => {
@@ -91,7 +93,10 @@ const createSmallPins = similarAds => {
 getData((ads) => {
   createSmallPins(ads);
   setFilterReset(() => createSmallPins(ads));
-  setFilterChange(() => createSmallPins(ads));
+  setFilterChange(_.debounce(
+    () => createSmallPins(ads),
+    CREATE_PINS_DELAY,
+  ));
 }, showAlert);
 
-export {INITIAL_COORDINATES, MAIN_PIN, smallPins};
+export {INITIAL_COORDINATES, MAIN_PIN};
