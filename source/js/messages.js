@@ -1,14 +1,17 @@
 import {disableFilter} from './filter.js';
-import {isEscEvent} from './util.js';
-import {AD_FORM} from './form.js';
-
-const ERROR_TEMPLATE = document.querySelector('#error').content.querySelector('.error');
-
-const SUCCESS_TEMPLATE = document.querySelector('#success').content.querySelector('.success');
+import {adForm} from './form.js';
 
 const ALERT_SHOW_TIME = 5000;
 
-const MAIN = document.querySelector('main');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+
+const main = document.querySelector('main');
+
+const isEscEvent = (evt) => {
+  return evt.key === 'Escape' || evt.key === 'Esc';
+};
 
 // Функция, создающая модальное окно
 const createModal = (type) => {
@@ -25,7 +28,7 @@ const createModal = (type) => {
     document.removeEventListener('keydown', onModalEscKeydown);
   };
 
-  MAIN.append(type);
+  main.append(type);
 
   document.addEventListener('keydown', onModalEscKeydown);
 
@@ -36,38 +39,38 @@ const createModal = (type) => {
 
 // Функция, показывающая окно с информацией об успешной отправке формы
 const showSuccessMessage = () => {
-  const SUCCESS_MESSAGE = SUCCESS_TEMPLATE.cloneNode(true);
-  AD_FORM.reset();
-  createModal(SUCCESS_MESSAGE);
+  const successMessage = successTemplate.cloneNode(true);
+  adForm.reset();
+  createModal(successMessage);
 };
 
 // Функция, показывающая окно с информацией об ошибке при отправке формы
 const showErrorMessage = () => {
-  const ERROR_MESSAGE = ERROR_TEMPLATE.cloneNode(true);
-  createModal(ERROR_MESSAGE);
+  const errorMessage = errorTemplate.cloneNode(true);
+  createModal(errorMessage);
 };
 
 // Функция, показывающая предупреждение об ошибке запроса
 const showAlert = (message) => {
-  const ALERT_CONTAINER = document.createElement('div');
-  ALERT_CONTAINER.style.zIndex = '100';
-  ALERT_CONTAINER.style.position = 'absolute';
-  ALERT_CONTAINER.style.left = '0';
-  ALERT_CONTAINER.style.top = '0';
-  ALERT_CONTAINER.style.right = '0';
-  ALERT_CONTAINER.style.padding = '10px 3px';
-  ALERT_CONTAINER.style.fontSize = '20px';
-  ALERT_CONTAINER.style.textAlign = 'center';
-  ALERT_CONTAINER.style.backgroundColor = 'red';
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '100';
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = '0';
+  alertContainer.style.top = '0';
+  alertContainer.style.right = '0';
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '20px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
 
-  ALERT_CONTAINER.textContent = message;
+  alertContainer.textContent = message;
 
-  document.body.append(ALERT_CONTAINER);
+  document.body.append(alertContainer);
 
   disableFilter();
 
   setTimeout(() => {
-    ALERT_CONTAINER.remove();
+    alertContainer.remove();
   }, ALERT_SHOW_TIME);
 };
 
