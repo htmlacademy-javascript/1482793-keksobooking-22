@@ -2,6 +2,7 @@ import {showErrorMessage, showSuccessMessage} from './messages.js';
 import {sendData} from './api.js';
 import {INITIAL_COORDINATES, MAIN_PIN} from './map.js';
 import {FILTER} from './filter.js';
+import {resetPhotoPreview} from './photos.js';
 
 const AD_FORM = document.querySelector('.ad-form');
 
@@ -119,6 +120,7 @@ AD_FORM.addEventListener('submit', (evt) => {
 AD_FORM.addEventListener('reset', () => {
   FILTER.reset();
   MAIN_PIN.setLatLng(INITIAL_COORDINATES);
+  resetPhotoPreview();
   setTimeout(() => {
     getRoomCapacity();
     ADDRESS.value = `${INITIAL_COORDINATES.lat}, ${INITIAL_COORDINATES.lng}`;
