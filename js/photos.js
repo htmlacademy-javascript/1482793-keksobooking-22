@@ -15,8 +15,8 @@ const readImage = (chooser, preview) => {
   const file = chooser.files[0];
   const fileName = file.name.toLowerCase();
 
-  const matches = FILE_TYPES.some((it) => {
-    return fileName.endsWith(it);
+  const matches = FILE_TYPES.some((type) => {
+    return fileName.endsWith(type);
   });
 
   if (matches) {
