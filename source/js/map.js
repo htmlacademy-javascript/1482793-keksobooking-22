@@ -2,49 +2,49 @@
 /* global _:readonly */
 
 import {enableFilter, setFilterChange, filterAds, setFilterReset} from './filter.js';
-import {enableForm, ADDRESS} from './form.js';
+import {enableForm, address} from './form.js';
 import {createSimilarCard} from './popup.js';
 import {getData} from './api.js';
 import {showAlert} from './messages.js';
-
-const INITIAL_COORDINATES = {
-  lat: '35.68951',
-  lng: '139.69201',
-};
 
 const SIMILAR_ADS_COUNT = 10;
 
 const CREATE_PINS_DELAY = 500;
 
-const MAP = L.map('map-canvas')
+const initialCoordinates = {
+  lat: '35.68951',
+  lng: '139.69201',
+};
+
+const map = L.map('map-canvas')
   .on('load', () => {
     enableFilter();
     enableForm();
-    ADDRESS.value = `${INITIAL_COORDINATES.lat}, ${INITIAL_COORDINATES.lng}`;
+    address.value = `${initialCoordinates.lat}, ${initialCoordinates.lng}`;
   })
   .setView({
-    lat: INITIAL_COORDINATES.lat,
-    lng: INITIAL_COORDINATES.lng,
+    lat: initialCoordinates.lat,
+    lng: initialCoordinates.lng,
   }, 10);
 
-const MAIN_PIN_ICON = L.icon({
+const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
 
-const MAIN_PIN = L.marker(
+const mainPin = L.marker(
   {
-    lat: INITIAL_COORDINATES.lat,
-    lng: INITIAL_COORDINATES.lng,
+    lat: initialCoordinates.lat,
+    lng: initialCoordinates.lng,
   },
   {
     draggable: true,
-    icon: MAIN_PIN_ICON,
+    icon: mainPinIcon,
   },
 );
 
-const SMALL_PIN_ICON = L.icon({
+const smallPinIcon = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
@@ -55,12 +55,12 @@ L.tileLayer(
   {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
-).addTo(MAP);
+).addTo(map);
 
-MAIN_PIN.addTo(MAP);
+mainPin.addTo(map);
 
-MAIN_PIN.on('moveend', (evt) => {
-  ADDRESS.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+mainPin.on('moveend', (evt) => {
+  address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
 let smallPins = [];
@@ -72,21 +72,21 @@ const createSmallPins = similarAds => {
     .filter(filterAds)
     .slice(0, SIMILAR_ADS_COUNT)
     .forEach((ad) => {
-      const SMALL_PIN = L.marker(
+      const smallPin = L.marker(
         {
           lat: ad.location.lat,
           lng: ad.location.lng,
         },
         {
-          icon: SMALL_PIN_ICON,
+          icon: smallPinIcon,
         },
       );
 
-      SMALL_PIN
-        .addTo(MAP)
+      smallPin
+        .addTo(map)
         .bindPopup(createSimilarCard(ad));
 
-      smallPins.push(SMALL_PIN);
+      smallPins.push(smallPin);
     });
 };
 
@@ -99,4 +99,4 @@ getData((ads) => {
   ));
 }, showAlert);
 
-export {INITIAL_COORDINATES, MAIN_PIN};
+export {initialCoordinates, mainPin};
