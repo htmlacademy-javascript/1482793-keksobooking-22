@@ -1,3 +1,7 @@
+const LOW_PRICE = 10000;
+
+const HIGH_PRICE = 50000;
+
 const filter = document.querySelector('.map__filters');
 
 const selects = filter.querySelectorAll('select');
@@ -31,10 +35,6 @@ const enableFilter = () => {
 };
 
 const getFilterByPrice = (data) => {
-  const LOW_PRICE = 10000;
-
-  const HIGH_PRICE = 50000;
-
   switch (priceSelect.value) {
     case 'low':
       return data.offer.price < LOW_PRICE;

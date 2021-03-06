@@ -926,7 +926,7 @@ fieldset {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 1000;
 
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -1003,6 +1003,11 @@ fieldset {
 .error__button:active {
   outline: none;
   opacity: 0.6;
+}
+
+.ad-form__element .invalid-input,
+.ad-form-header .invalid-input {
+  border: 2px solid red;
 }
 
 .visually-hidden {

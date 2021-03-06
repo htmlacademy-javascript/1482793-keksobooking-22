@@ -24,6 +24,8 @@ const roomNumber = adForm.querySelector('#room_number');
 
 const capacity = adForm.querySelector('#capacity');
 
+const submitButton = adForm.querySelector('.ad-form__submit');
+
 
 const accomodationPrice = {
   bungalow: 0,
@@ -53,9 +55,15 @@ const enableForm = () => {
   });
 };
 
+const setPrice = () => {
+  const minPrice = accomodationPrice[type.value];
+  price.min = minPrice;
+  price.placeholder = minPrice;
+};
+
 disableForm();
 
-title.addEventListener('invalid', () => {
+title.addEventListener('input', () => {
   if (title.validity.tooShort) {
     title.setCustomValidity(`Минимальное количество символов: ${title.minLength}`);
   } else if (title.validity.tooLong) {
@@ -64,27 +72,31 @@ title.addEventListener('invalid', () => {
     title.setCustomValidity('Обязательное поле');
   } else {
     title.setCustomValidity('');
+    title.classList.remove('invalid-input');
   }
+
+  title.reportValidity();
 });
 
 address.readOnly = true;
 
 type.addEventListener('change', () => {
-  const minPrice = accomodationPrice[type.value];
-  price.min = minPrice;
-  price.placeholder = minPrice;
+  setPrice();
 });
 
-price.addEventListener('invalid', () => {
+price.addEventListener('input', () => {
   if (price.validity.rangeUnderflow) {
     price.setCustomValidity(`Минимальная цена: ${price.min}`);
-  } else if (price.validity.tooLong) {
-    title.setCustomValidity(`Максимальная цена: ${price.max}`);
+  } else if (price.validity.rangeOverflow) {
+    price.setCustomValidity(`Максимальная цена: ${price.max}`);
   } else if (price.validity.valueMissing) {
     price.setCustomValidity('Обязательное поле');
   } else {
     price.setCustomValidity('');
+    price.classList.remove('invalid-input');
   }
+
+  price.reportValidity();
 });
 
 const getRoomCapacity = () => {
@@ -108,6 +120,20 @@ checkOutTime.addEventListener('change', () => {
   checkInTime.value = checkOutTime.value;
 });
 
+const showInvalidFieldsBorders = () => {
+  const invalidFields = adForm.querySelectorAll('input:invalid');
+  invalidFields.forEach((field) => field.classList.add('invalid-input'));
+}
+
+const removeInvalidFieldsBorders = () => {
+  const fieldsWithBorders = adForm.querySelectorAll('.invalid-input');
+  fieldsWithBorders.forEach((field) => {
+    field.classList.remove('invalid-input');
+  });
+}
+
+submitButton.addEventListener('click', showInvalidFieldsBorders);
+
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   sendData(
@@ -121,8 +147,10 @@ adForm.addEventListener('reset', () => {
   filter.reset();
   mainPin.setLatLng(initialCoordinates);
   resetPhotoPreview();
+  removeInvalidFieldsBorders();
   setTimeout(() => {
     getRoomCapacity();
+    setPrice();
     address.value = `${initialCoordinates.lat}, ${initialCoordinates.lng}`;
   }, 0)
 });
