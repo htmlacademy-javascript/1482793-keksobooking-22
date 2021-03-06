@@ -32,8 +32,8 @@ const readImage = (chooser, preview) => {
 
 const createNewPhotoPreview = () => {
   const newPhotoPreview = document.createElement('img');
-  newPhotoPreview.width = `${photoPreview.offsetWidth}`;
-  newPhotoPreview.height = `${photoPreview.offsetHeight}`;
+  newPhotoPreview.width = photoPreview.offsetWidth;
+  newPhotoPreview.height = photoPreview.offsetHeight;
   newPhotoPreview.alt = 'Фотография жилья в аренду';
   photoPreview.innerHTML = '';
   photoPreview.append(newPhotoPreview);

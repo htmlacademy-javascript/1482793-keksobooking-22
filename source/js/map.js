@@ -18,9 +18,17 @@ const initialCoordinates = {
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    enableFilter();
     enableForm();
     address.value = `${initialCoordinates.lat}, ${initialCoordinates.lng}`;
+    getData((ads) => {
+      createSmallPins(ads);
+      enableFilter();
+      setFilterReset(() => createSmallPins(ads));
+      setFilterChange(_.debounce(
+        () => createSmallPins(ads),
+        CREATE_PINS_DELAY,
+      ));
+    }, showAlert);
   })
   .setView({
     lat: initialCoordinates.lat,
@@ -89,14 +97,5 @@ const createSmallPins = similarAds => {
       smallPins.push(smallPin);
     });
 };
-
-getData((ads) => {
-  createSmallPins(ads);
-  setFilterReset(() => createSmallPins(ads));
-  setFilterChange(_.debounce(
-    () => createSmallPins(ads),
-    CREATE_PINS_DELAY,
-  ));
-}, showAlert);
 
 export {initialCoordinates, mainPin};
