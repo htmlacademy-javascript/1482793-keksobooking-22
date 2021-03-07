@@ -27,7 +27,7 @@ const capacity = adForm.querySelector('#capacity');
 const submitButton = adForm.querySelector('.ad-form__submit');
 
 
-const accomodationPrice = {
+const accommodationPrice = {
   bungalow: 0,
   flat: 1000,
   house: 5000,
@@ -56,7 +56,7 @@ const enableForm = () => {
 };
 
 const setPrice = () => {
-  const minPrice = accomodationPrice[type.value];
+  const minPrice = accommodationPrice[type.value];
   price.min = minPrice;
   price.placeholder = minPrice;
 };
